@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shop_app/providers/cart.dart';
+import 'package:shop_app/widgets/badge.dart';
 import 'package:shop_app/widgets/products_grid.dart';
 
 enum FilterOptions { Favorites, All }
@@ -10,6 +13,7 @@ class ProductOverviewScreen extends StatefulWidget {
 
 class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
   var _showOnlyFav = false;
+  Key key = Key("1");
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +21,18 @@ class _ProductOverviewScreenState extends State<ProductOverviewScreen> {
       appBar: AppBar(
         title: const Text('MyShop'),
         actions: <Widget>[
+          Consumer<Cart>(
+            builder: (_, cart, ch) => Badge(
+              child: ch as Widget,
+              key: key,
+              value: cart.itemCount.toString(),
+              color: Colors.white,
+            ),
+            child: IconButton(
+              icon: const Icon(Icons.shopping_cart),
+              onPressed: () {},
+            ),
+          ),
           PopupMenuButton(
             onSelected: (FilterOptions selectedValue) {
               setState(() {
