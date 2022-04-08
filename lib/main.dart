@@ -10,10 +10,12 @@ import 'package:shop_app/screens/product_overview_screen.dart';
 import 'package:shop_app/screens/user_products_screen.dart';
 import './providers/products.dart';
 
-void main() => runApp(MyApp());
+void main() => runApp(const MyApp());
 
 // 2022.03.20
 class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
@@ -32,9 +34,9 @@ class MyApp extends StatelessWidget {
         title: 'MyShop',
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
-          primarySwatch: Colors.purple,
-          accentColor: Colors.deepOrange,
           fontFamily: 'Lato',
+          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+              .copyWith(secondary: Colors.deepOrange),
         ),
         home: ProductOverviewScreen(),
         routes: {

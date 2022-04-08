@@ -9,7 +9,9 @@ class CartItem extends StatelessWidget {
   final int quantity;
   final String title;
 
-  CartItem(this.id, this.productId, this.price, this.quantity, this.title);
+  // ignore: use_key_in_widget_constructors
+  const CartItem(
+      this.id, this.productId, this.price, this.quantity, this.title);
 
   @override
   Widget build(BuildContext context) {
