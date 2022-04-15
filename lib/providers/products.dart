@@ -3,6 +3,8 @@ import 'package:shop_app/providers/product.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import '../models/http_exception.dart';
+
 class Products with ChangeNotifier {
   List<Product> _items = [
     // Product(
@@ -126,9 +128,22 @@ class Products with ChangeNotifier {
     return _items.firstWhere((element) => element.id == id);
   }
 
-  void updateProduct(String id, Product newProduct) {
+  Future<void> updateProduct(String id, Product newProduct) async {
     final index = _items.indexWhere((element) => element.id == id);
     if (index >= 0) {
+      final url =
+          'https://flutter-update-e08da-default-rtdb.firebaseio.com/products/$id.json';
+      final response = await http.patch(
+        Uri.parse(url),
+        body: json.encode(
+          {
+            'title': newProduct.title,
+            'description': newProduct.description,
+            'imageUrl': newProduct.imageUrl,
+            'price': newProduct.price,
+          },
+        ),
+      );
       _items[index] = newProduct;
       notifyListeners();
     } else {
@@ -136,8 +151,21 @@ class Products with ChangeNotifier {
     }
   }
 
-  void deleteProduct(String id) {
-    _items.removeWhere((element) => element.id == id);
-    notifyListeners();
+  Future<void> deleteProduct(String id) async {
+    final url =
+        'https://flutter-update-e08da-default-rtdb.firebaseio.com/products/$id.json';
+    // final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    // var existingProduct = _items[existingProductIndex];
+    // _items.removeWhere((element) => element.id == id);
+
+    final response = await http.delete(Uri.parse(url));
+    if (response.statusCode >= 400) {
+      throw HttpException('Could not delete product');
+    } else {
+      _items.removeWhere((element) => element.id == id);
+      notifyListeners();
+    }
+
+    // _items.insert(existingProductIndex, existingProduct);
   }
 }
