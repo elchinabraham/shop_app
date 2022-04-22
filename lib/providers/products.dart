@@ -43,6 +43,10 @@ class Products with ChangeNotifier {
 
   // var _showFavoritesOnly = false;
 
+  final String authToken;
+
+  Products(this.authToken);
+
   List<Product> get items {
     // in this case it returns copy of _items object
     // instead of reference of _items object
@@ -53,8 +57,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchProducts() async {
-    const url =
-        'https://flutter-update-e08da-default-rtdb.firebaseio.com/products.json';
+    final url =
+        'https://flutter-update-e08da-default-rtdb.firebaseio.com/products.json?auth=$authToken';
     try {
       final response = await http.get(Uri.parse(url));
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
