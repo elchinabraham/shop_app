@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_cast
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_app/providers/auth.dart';
@@ -28,9 +30,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProxyProvider<Auth, Products>(
           create: (ctx) => Products(
             Provider.of<Auth>(ctx, listen: false).token as String,
+            Provider.of<Auth>(ctx, listen: false).userId as String,
           ),
           update: (ctx, auth, previousProducts) => Products(
             auth.token as String,
+            auth.userId as String,
           ),
         ),
         // ChangeNotifierProxyProvider<Auth, Products>(
@@ -40,8 +44,15 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider.value(
           value: Cart(),
         ),
-        ChangeNotifierProvider.value(
-          value: Orders(),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (ctx) => Orders(
+            Provider.of<Auth>(ctx, listen: false).token as String,
+            Provider.of<Auth>(ctx, listen: false).userId as String,
+          ),
+          update: (ctx, auth, previousProducts) => Orders(
+            auth.token as String,
+            auth.userId as String,
+          ),
         ),
       ],
       child: Consumer<Auth>(
