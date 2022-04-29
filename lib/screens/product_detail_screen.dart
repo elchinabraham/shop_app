@@ -14,37 +14,48 @@ class ProductDetailScreen extends StatelessWidget {
       listen: false,
     ).findById(productId);
     return Scaffold(
-      appBar: AppBar(
-        title: Text('title $productId'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            Container(
-              width: double.infinity,
-              height: 300,
-              child: Image.network(
+      // appBar: AppBar(
+      //   title: Text('title $productId'),
+      // ),
+      body: CustomScrollView(
+        slivers: <Widget>[
+          SliverAppBar(
+            expandedHeight: 300,
+            pinned: true,
+            flexibleSpace: FlexibleSpaceBar(
+              title: Text(loadedProduct.title),
+              background: Image.network(
                 loadedProduct.imageUrl,
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              '\$${loadedProduct.price}',
-              style: const TextStyle(color: Colors.grey, fontSize: 20),
+          ),
+          SliverList(
+            delegate: SliverChildListDelegate(
+              [
+                const SizedBox(height: 10),
+                Text(
+                  '\$${loadedProduct.price}',
+                  style: const TextStyle(color: Colors.grey, fontSize: 20),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 10),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  width: double.infinity,
+                  child: Text(
+                    loadedProduct.description,
+                    textAlign: TextAlign.center,
+                    softWrap: true,
+                  ),
+                ),
+                SizedBox(
+                  height: 800,
+                ),
+              ],
             ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              width: double.infinity,
-              child: Text(
-                loadedProduct.description,
-                textAlign: TextAlign.center,
-                softWrap: true,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

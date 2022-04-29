@@ -64,15 +64,19 @@ class Products with ChangeNotifier {
         'https://flutter-update-e08da-default-rtdb.firebaseio.com/products.json?auth=$authToken&$filterString';
     try {
       final response = await http.get(Uri.parse(url));
+
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       final List<Product> loadedProducts = [];
+      print(extractedData);
       if (extractedData == null) {
         return;
       }
       url =
           'https://flutter-update-e08da-default-rtdb.firebaseio.com/userFavorites/$userId.json?auth=$authToken';
       final favoriteResponse = await http.get(Uri.parse(url));
-      final favoriteData = json.decode(favoriteResponse.body);
+      final favoriteData =
+          json.decode(favoriteResponse.body) as Map<String, dynamic>;
+      print(extractedData);
       extractedData.forEach(
         (productId, productData) {
           loadedProducts.add(Product(
